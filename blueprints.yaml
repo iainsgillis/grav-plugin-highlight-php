@@ -1,0 +1,36 @@
+name: Highlight Php
+slug: highlight-php
+type: plugin
+version: 0.1.0
+description: Server-side syntax highlighting (i.e., without JavaScript) using the [highlight.php](https://github.com/scrivo/highlight.php) library
+icon: plug
+author:
+  name: Iain Gillis
+  email: iain@iainsgillis.com
+homepage: https://github.com/iainsgillis/grav-plugin-highlight-php
+demo: http://demo.yoursite.com
+keywords: grav, plugin, etc
+bugs: https://github.com/iainsgillis/grav-plugin-highlight-php/issues
+docs: https://github.com/iainsgillis/grav-plugin-highlight-php/blob/develop/README.md
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.6.0' }
+
+form:
+  validation: loose
+  fields:
+    enabled:
+      type: toggle
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+    text_var:
+      type: text
+      label: PLUGIN_HIGHLIGHT_PHP.TEXT_VARIABLE
+      help: PLUGIN_HIGHLIGHT_PHP.TEXT_VARIABLE_HELP

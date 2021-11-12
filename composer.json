@@ -1,0 +1,29 @@
+{
+  "name": "iainsgillis/highlight-php",
+  "type": "grav-plugin",
+  "description": "Server-side syntax highlighting (i.e., without JavaScript) using the [highlight.php](https://github.com/scrivo/highlight.php) library",
+  "keywords": ["plugin"],
+  "homepage": "https://github.com/iainsgillis/grav-plugin-highlight-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Iain Gillis",
+      "email": "iain@iainsgillis.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Grav\\Plugin\\HighlightPhp\\": "classes/"
+    },
+    "classmap":  ["highlight-php.php"]
+  },
+  "config": {
+    "platform": {
+      "php": "7.1.3"
+    }
+  }
+}
