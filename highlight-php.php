@@ -1,4 +1,5 @@
 <?php
+
 namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
@@ -24,8 +25,7 @@ class HighlightPhpPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
-                // Uncomment following line when plugin requires Grav < 1.7
-                // ['autoload', 100000],
+                ['autoload', 100000], // since we're requiring Grav < 1.7
                 ['onPluginsInitialized', 0]
             ]
         ];
@@ -44,16 +44,38 @@ class HighlightPhpPlugin extends Plugin
     /**
      * Initialize the plugin
      */
-    public function onPluginsInitialized(): void
+    public function onPluginsInitialized()
     {
-        // Don't proceed if we are in the admin plugin
+        // don't proceed if in admin
         if ($this->isAdmin()) {
             return;
         }
 
-        // Enable the main events we are interested in
+        // don't proceed if plugin is disabled
+        if (!$this->config->get('plugins.php-highlight.enabled')) {
+            return;
+        }
+
+        // enable other required events
         $this->enable([
-            // Put your main events here
+            'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
         ]);
+
+        // set the configured theme, falling back to 'default' if unset
+        $theme = $this->config->get('plugins.php-highlight.theme') ?: 'default';
+
+        // register the css for our plugin
+        $this->addHighlightingAssets($theme);
+    }
+
+    public function onShortcodeHandlers()
+    {
+        $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
+    }
+
+    private function addHighLightingAssets($theme)
+    {
+        // add the syntax highlighting CSS file
+        $this->grav['assets']->addCss('plugin://php-highlight/vendor/scrivo/highlight.php/styles/' . $theme . '.css');
     }
 }
