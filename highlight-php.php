@@ -52,7 +52,7 @@ class HighlightPhpPlugin extends Plugin
         }
 
         // don't proceed if plugin is disabled
-        if (!$this->config->get('plugins.php-highlight.enabled')) {
+        if (!$this->config->get('plugins.highlight-php.enabled')) {
             return;
         }
 
@@ -62,7 +62,7 @@ class HighlightPhpPlugin extends Plugin
         ]);
 
         // set the configured theme, falling back to 'default' if unset
-        $theme = $this->config->get('plugins.php-highlight.theme') ?: 'default';
+        $theme = $this->config->get('plugins.highlight-php.theme') ?: 'default';
 
         // register the css for our plugin
         $this->addHighlightingAssets($theme);
@@ -77,6 +77,6 @@ class HighlightPhpPlugin extends Plugin
     private function addHighLightingAssets($theme)
     {
         // add the syntax highlighting CSS file
-        $this->grav['assets']->addCss('plugin://php-highlight/vendor/scrivo/highlight.php/styles/' . $theme . '.css');
+        $this->grav['assets']->addCss('plugin://highlight-php/vendor/scrivo/highlight.php/styles/' . $theme . '.css');
     }
 }
