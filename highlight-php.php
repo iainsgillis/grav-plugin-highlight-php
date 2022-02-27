@@ -70,6 +70,7 @@ class HighlightPhpPlugin extends Plugin
 
     public function onShortcodeHandlers()
     {
+        // FYI: `onShortCodeHandlers` is fired by the shortcode core at the `onThemesInitialized` event 
         $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
     }
 
