@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "scrivo/highlight.php",
-            "version": "v9.18.1.8",
-            "version_normalized": "9.18.1.8",
+            "version": "v9.18.1.9",
+            "version_normalized": "9.18.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scrivo/highlight.php.git",
-                "reference": "6d5049cd2578e19a06adbb6ac77879089be1e3f9"
+                "reference": "d45585504777e6194a91dffc7270ca39833787f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/6d5049cd2578e19a06adbb6ac77879089be1e3f9",
-                "reference": "6d5049cd2578e19a06adbb6ac77879089be1e3f9",
+                "url": "https://api.github.com/repos/scrivo/highlight.php/zipball/d45585504777e6194a91dffc7270ca39833787f8",
+                "reference": "d45585504777e6194a91dffc7270ca39833787f8",
                 "shasum": ""
             },
             "require": {
@@ -28,17 +28,17 @@
             "suggest": {
                 "ext-mbstring": "Allows highlighting code with unicode characters and supports language with unicode keywords"
             },
-            "time": "2021-10-24T00:28:14+00:00",
+            "time": "2021-12-03T06:45:28+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
+                "files": [
+                    "HighlightUtilities/functions.php"
+                ],
                 "psr-0": {
                     "Highlight\\": "",
                     "HighlightUtilities\\": ""
-                },
-                "files": [
-                    "HighlightUtilities/functions.php"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
