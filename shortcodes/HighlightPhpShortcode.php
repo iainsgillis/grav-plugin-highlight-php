@@ -2,6 +2,8 @@
 
 namespace Grav\Plugin\Shortcodes;
 
+use DomainException;
+use Exception;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 class HighlightPhpShortcode extends Shortcode
@@ -24,6 +26,26 @@ class HighlightPhpShortcode extends Shortcode
                 // TODO: update the logic required by the Thunderer Shortcode engine
                 return "<div>shortcode <span style='font-family: monospace'>" . $sc->getName() . "</span> successfully registered!</div>";
             });
+        }
+    }
+    /**
+     * Helper method to produce processed, syntax-highlightable HTML 
+     * @param string $lang language or alias supported by highlight.php
+     * @param string $code the code to tokenize and syntax highlight
+     * @return string the HTML with the appropriate classes to be rendered as highlighted in the browser
+     * @throws DomainException 
+     * @throws Exception 
+     */
+    private function render(string $lang, string $code)
+    {
+        try {
+            $hl = new \Highlight\Highlighter();
+            $highlighted = $hl->highlight($lang, $code);
+            $output = $highlighted->value;
+            return "<code class='hljs language-$highlighted->language'>$output</code>";
+        } catch (DomainException $e) {
+            // if someone uses an unsupported language, we don't want to break the site
+            return "<code class='hljs whoops-$lang-unknown-language'>$code</code>";
         }
     }
 }
