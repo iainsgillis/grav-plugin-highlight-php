@@ -1,4 +1,4 @@
-<?php // shortcodes/HighlightPhpShortcode.php
+<?php
 
 namespace Grav\Plugin\Shortcodes;
 
@@ -24,8 +24,15 @@ class HighlightPhpShortcode extends Shortcode
             // ... and add each one in turn
             $rawHandlers->add($k, function (ShortcodeInterface $sc) {
                 $lang = $sc->getName();
-                $code = $sc->getBbCode();
-                return $this->render($lang, $code);
+                $content = $sc->getContent();
+                $isInline = is_null($content);
+                if ($isInline) {
+                    $code = $sc->getBbCode();
+                } else {
+                    $code = $content;
+                }
+                $code = trim($code);
+                return $this->render($lang, $code, $isInline);
             });
         }
     }
@@ -33,20 +40,24 @@ class HighlightPhpShortcode extends Shortcode
      * Helper method to produce processed, syntax-highlightable HTML 
      * @param string $lang language or alias supported by highlight.php
      * @param string $code the code to tokenize and syntax highlight
+     * @param bool $isInline true if the snippet is to be rendered inline, false if block
      * @return string the HTML with the appropriate classes to be rendered as highlighted in the browser
      * @throws DomainException 
      * @throws Exception 
      */
-    private function render(string $lang, string $code)
+    private function render(string $lang, string $code, bool $isInline)
     {
         try {
             $hl = new \Highlight\Highlighter();
             $highlighted = $hl->highlight($lang, $code);
             $output = $highlighted->value;
-            return "<code class='hljs language-$highlighted->language' style='display: inline;'>$output</code>";
+            $display = $isInline ? 'inline' : 'block';
+            $codeElement = "<code class='hljs language-$highlighted->language' style='display: $display'>$output</code>";
+            return $isInline ? $codeElement : "<pre class='hljs'>$codeElement</pre>";
         } catch (DomainException $e) {
             // if someone uses an unsupported language, we don't want to break the site
-            return "<code class='hljs whoops-$lang-unknown-language'>$code</code>";
+            $codeElement = "<code class='hljs whoops-$lang-unknown-language'>$code</code>";
+            return $isInline ? $codeElement : "<pre class='hljs'>$codeElement</pre>";
         }
     }
 }
