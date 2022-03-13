@@ -23,8 +23,9 @@ class HighlightPhpShortcode extends Shortcode
 
             // ... and add each one in turn
             $rawHandlers->add($k, function (ShortcodeInterface $sc) {
-                // TODO: update the logic required by the Thunderer Shortcode engine
-                return "<div>shortcode <span style='font-family: monospace'>" . $sc->getName() . "</span> successfully registered!</div>";
+                $lang = $sc->getName();
+                $code = $sc->getBbCode();
+                return $this->render($lang, $code);
             });
         }
     }
