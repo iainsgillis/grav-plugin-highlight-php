@@ -43,7 +43,7 @@ class HighlightPhpShortcode extends Shortcode
             $hl = new \Highlight\Highlighter();
             $highlighted = $hl->highlight($lang, $code);
             $output = $highlighted->value;
-            return "<code class='hljs language-$highlighted->language'>$output</code>";
+            return "<code class='hljs language-$highlighted->language' style='display: inline;'>$output</code>";
         } catch (DomainException $e) {
             // if someone uses an unsupported language, we don't want to break the site
             return "<code class='hljs whoops-$lang-unknown-language'>$code</code>";
