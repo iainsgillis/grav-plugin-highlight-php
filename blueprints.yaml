@@ -31,7 +31,18 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    text_var:
+    custom_styles:
       type: text
-      label: PLUGIN_HIGHLIGHT_PHP.TEXT_VARIABLE
-      help: PLUGIN_HIGHLIGHT_PHP.TEXT_VARIABLE_HELP
+      label: User/custom CSS Styles
+      help: Subdirectory in the /user/custom/ directory to store your custom syntax themes
+      default: 'highlight-php-styles'
+      size: medium
+    theme:
+      type: select
+      size: medium
+      classes: fancy
+      label: Theme
+      help: 'Select an avaialble theme. Your custom themes appear at the top of the list.'
+      default: 'default'
+      data-options@: '\Grav\Plugin\HighlightPhpPlugin::getAvailableThemes'
+      
