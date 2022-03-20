@@ -1,4 +1,6 @@
 en:
   PLUGIN_HIGHLIGHT_PHP:
-    TEXT_VARIABLE: Text Variable
-    TEXT_VARIABLE_HELP: Text to add to the top of a page
+    LABEL_CUSTOM_STYLES: Custom CSS styles directory
+    LABEL_CUSTOM_STYLES_HELP: Subdirectory in the /user/custom/ directory to store your custom syntax themes
+    LABEL_THEME: Theme
+    LABEL_THEME_HELP: 'Select an avaialble theme. Your custom themes appear at the top of the list.'
