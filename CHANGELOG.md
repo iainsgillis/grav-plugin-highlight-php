@@ -1,5 +1,5 @@
-# v0.1.0
-##  11/12/2021
+# v1.0.0
+##  20-03-2022
 
 1. [](#new)
-    * ChangeLog started...
+    * First version of the plugin ready for public consumption
