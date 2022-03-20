@@ -87,30 +87,53 @@ class HighlightPhpPlugin extends Plugin
 
     private function addHighLightingAssets($theme)
     {
-        // add the syntax highlighting CSS file
-        $this->grav['assets']->addCss('plugin://highlight-php/vendor/scrivo/highlight.php/styles/' . $theme . '.css');
+        $locator = $this->grav['locator'];
+        if (str_ends_with($theme, '¹')) {
+            // custom theme
+            $theme = str_replace('¹', '', $theme);
+            $customStylesDirName = $this->grav['config']->get('plugins.highlight-php.custom_styles');
+            $themePath = $locator->findResource('user://custom/' . $customStylesDirName . '/' . $theme . '.css', false);
+        } else {
+            // built-in theme
+            $themePath = $locator->findResource('plugin://highlight-php/vendor/scrivo/highlight.php/styles/' . $theme . '.css', false);
+        }
+        $this->grav['assets']->addCss($themePath);
     }
 
     public static function getAvailableThemes()
     {
         # make references to objects on our Grav instance
         $grav = Grav::instance();
-        $locator = $grav['locator']; 
-        // $config = $grav['config'];   
+        $locator = $grav['locator'];
+        $config = $grav['config'];
 
         # initialize an empty array
         $themes = [];
 
+        # resolve the custom styles directory
+        $customStylesDirName = $config->get('plugins.highlight-php.custom_styles');
+        $customStylesPath = $locator->findResource('user://custom/' . $customStylesDirName, false);
+
+        if ($customStylesPath) {
+            # get our list of custom CSS files
+            $customCssFiles = glob($customStylesPath . '/*.css');
+            foreach ($customCssFiles as $cssFile) {
+                # append a superscript 1 (¹) to prevent naming conflicts if customizing an inbuilt theme
+                $theme = basename($cssFile, '.css') . '¹';
+                # indicate to the user that this theme is one of the custom uploads
+                $themes[$theme] = Inflector::titleize($theme) . ' (custom)';
+            }
+        }
+
         # ➍ use the findResource method to resolve the plugin stream location; false returns a relative path
-        $bundledStylesPath = $locator->findResource('plugin://highlight-php/vendor/scrivo/highlight.php/styles', false); 
-        
+        $bundledStylesPath = $locator->findResource('plugin://highlight-php/vendor/scrivo/highlight.php/styles', false);
+
         # plain old PHP glob. See https://www.php.net/manual/en/function.glob.php
         $cssFiles = glob($bundledStylesPath . '/*.css');
 
-        # loop over each file
         foreach ($cssFiles as $cssFile) {
             # ➋ store our key
-            $theme = basename($cssFile, ".css"); 
+            $theme = basename($cssFile, ".css");
             # ➌ set our value and add it to the array
             $themes[$theme] = Inflector::titleize($theme); # ➍ thanks, titleize
         }
