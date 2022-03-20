@@ -1,2 +1,3 @@
 enabled: true
 theme: default
+custom_styles: highlight-php-styles
