@@ -17,7 +17,7 @@ class HighlightPhpShortcode extends Shortcode
             $content = $sc->getContent();
             $isInline = is_null($content);
             $code = $isInline ? $sc->getParameter('code') : $content;
-            $code = trim($code);
+            $code = trim($code, '\n\r');
             return $this->render($lang, $code, $isInline);
         });
     }
