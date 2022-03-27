@@ -79,7 +79,7 @@ alias)](https://github.com/scrivo/highlight.php/tree/master/src/Highlight/langua
 and the string parameter after the equals sign is the snippet to be parsed.
 
 For example: this paragraph, with the raw forms of
-`[javascript="console.log('hello')"]` and `[js="console.log('hello')"]` renders
+`[hl=javascript code="console.log('hello')"]` and `[hl=js code="console.log('hello')"]` renders
 (using the default style) as follows:
 
 ![Screenshot of default theme inline syntax-highlighted JavaScript snippets](./assets/01.inline-example.jpg)
@@ -92,14 +92,14 @@ documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 you could enter:
 
 ```
-[js]
+[hl=js]
 class Rectangle {
   constructor(height, width) {
     this.height = height;
     this.width = width;
   }
 }
-[/js]
+[/hl]
 ```
 
 and get back:
