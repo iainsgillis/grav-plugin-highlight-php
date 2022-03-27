@@ -74,9 +74,9 @@ Only [explicit mode](https://github.com/scrivo/highlight.php#explicit-mode) is
 supported; this is by design.
 
 To enter an inline, syntax-highlighted code snippet, use a self-closing
-shortcode, where the tagname is a [supported language name (or an
+shortcode, where the BbCode value is a [supported language name (or an
 alias)](https://github.com/scrivo/highlight.php/tree/master/src/Highlight/languages),
-and the string parameter after the equals sign is the snippet to be parsed.
+and the `code` parameter is the snippet to be parsed.
 
 For example: this paragraph, with the raw forms of
 `[hl=javascript code="console.log('hello')"]` and `[hl=js code="console.log('hello')"]` renders
@@ -85,7 +85,7 @@ For example: this paragraph, with the raw forms of
 ![Screenshot of default theme inline syntax-highlighted JavaScript snippets](./assets/01.inline-example.jpg)
 
 To enter a block-level, syntax-highlighted code snippet, use paired shortcodes
-where the matching tagnames are a supported language name (or alias), and the
+passing a supported language name (or alias) as the BbCode value, and the
 content between the tags is your content. For example, to render, with syntax
 highlighting, a snippet on [JavaScript class declarations taken from the MDN
 documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#class_expressions),
