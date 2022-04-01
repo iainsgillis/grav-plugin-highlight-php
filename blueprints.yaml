@@ -31,18 +31,20 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    custom_styles:
-      type: text
-      label: PLUGIN_HIGHLIGHT_PHP.LABEL_CUSTOM_STYLES
-      help: PLUGIN_HIGHLIGHT_PHP.LABEL_CUSTOM_STYLES_HELP
-      default: 'highlight-php-styles'
-      size: medium
-    theme:
+    style:
       type: select
       size: medium
       classes: fancy
-      label: PLUGIN_HIGHLIGHT_PHP.LABEL_THEME
-      help: PLUGIN_HIGHLIGHT_PHP.LABEL_THEME_HELP
+      label: PLUGIN_HIGHLIGHT_PHP.LABEL_STYLE
+      help: PLUGIN_HIGHLIGHT_PHP.LABEL_STYLE_HELP
       default: 'default'
-      data-options@: '\Grav\Plugin\HighlightPhpPlugin::getAvailableThemes'
+      data-options@: '\Grav\Plugin\HighlightPhpPlugin::getBuiltInThemes'
+    customStyle:
+      type: select
+      size: medium
+      classes: fancy
+      label: PLUGIN_HIGHLIGHT_PHP.LABEL_CUSTOM_STYLE
+      help: PLUGIN_HIGHLIGHT_PHP.LABEL_CUSTOM_STYLE_HELP
+      default: 'None'
+      data-options@: '\Grav\Plugin\HighlightPhpPlugin::getCustomThemes'
       

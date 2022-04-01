@@ -7,6 +7,7 @@ use Grav\Common\Grav;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\Inflector;
 use Grav\Common\Plugin;
+use RocketTheme\Toolbox\File\File;
 
 /**
  * Class HighlightPhpPlugin
@@ -14,6 +15,8 @@ use Grav\Common\Plugin;
  */
 class HighlightPhpPlugin extends Plugin
 {
+    private const BUILT_IN_STYLES_DIRECTORY = 'plugin://highlight-php/vendor/scrivo/highlight.php/styles/';
+    private const CUSTOM_STYLES_DIRECTORY = 'user-data://highlight-php/';
     /**
      * @return array
      *
@@ -54,29 +57,38 @@ class HighlightPhpPlugin extends Plugin
             return;
         }
 
-        // don't proceed if plugin is disabled
-        if (!$this->config->get('plugins.highlight-php.enabled')) {
-            return;
-        }
-
         // enable other required events
         $this->enable([
             'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
         ]);
 
-        // set the configured theme, falling back to 'default' if unset
-        $theme = $this->config->get('plugins.highlight-php.theme') ?: 'default';
-
-        // create the user/custom directory if it doesn't exist
-        $customStylesDirName = $this->config->get('plugins.highlight-php.custom_styles');
-        $locator = Grav::instance()['locator'];
-        $userCustomDirPath = $locator->findResource('user://') . '/' . 'custom' . '/' . $customStylesDirName;
-        if (!($locator->findResource($userCustomDirPath))) {
-            Folder::create($userCustomDirPath);
+        if (!(is_dir(self::CUSTOM_STYLES_DIRECTORY))) {
+            Folder::create(self::CUSTOM_STYLES_DIRECTORY);
+            $demoCss = '.hljs { font-family: cursive; }';
+            $file = File::instance(self::CUSTOM_STYLES_DIRECTORY . 'exampleOverrideCursiveFont.css');
+            $file->save($demoCss);
         }
 
-        // register the css for our plugin
-        $this->addHighlightingAssets($theme);
+        // set the configured theme, falling back to 'default' if unset
+        $style = $this->config->get('plugins.highlight-php.style') ?: 'default';
+        // set the configured theme, falling back to 'default' if unset
+        $customStyle = $this->config->get('plugins.highlight-php.customStyle') ?: 'None';
+
+        // register the css for our plugin, if required
+        if ($this->shouldLoadAsset($style)) {
+            $this->addHighlightingAssets($style, 'builtIn');
+        }
+        if ($this->shouldLoadAsset($customStyle)) {
+            $this->addHighlightingAssets($customStyle, 'custom');
+        }
+    }
+
+    public function onPageInitialized()
+    {
+        // don't proceed if in admin
+        if ($this->isAdmin()) {
+            return;
+        }
     }
 
     public function onShortcodeHandlers()
@@ -85,60 +97,67 @@ class HighlightPhpPlugin extends Plugin
         $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
     }
 
-    private function addHighLightingAssets($theme)
+    private function shouldLoadAsset($styleName)
+    {
+        return $styleName !== 'None';
+    }
+
+    private function addHighLightingAssets($styleName, $builtInOrCustom)
     {
         $locator = $this->grav['locator'];
-        if (str_ends_with($theme, '¹')) {
-            // custom theme
-            $theme = str_replace('¹', '', $theme);
-            $customStylesDirName = $this->grav['config']->get('plugins.highlight-php.custom_styles');
-            $themePath = $locator->findResource('user://custom/' . $customStylesDirName . '/' . $theme . '.css', false);
-        } else {
-            // built-in theme
-            $themePath = $locator->findResource('plugin://highlight-php/vendor/scrivo/highlight.php/styles/' . $theme . '.css', false);
+        if ($builtInOrCustom === 'builtIn') {
+            $themePath = $locator->findResource(self::BUILT_IN_STYLES_DIRECTORY . $styleName . '.css', false);
+        }
+        if ($builtInOrCustom === 'custom') {
+            $themePath = $locator->findResource(self::CUSTOM_STYLES_DIRECTORY  . $styleName . '.css', false);
         }
         $this->grav['assets']->addCss($themePath);
     }
 
-    public static function getAvailableThemes()
+    /**
+     * 
+     * @param string $directory Input URI to search
+     * @return string[] associative array of css filenames, plus a 'None' entry
+     */
+    private static function getThemesInDirectory($directory)
     {
-        # make references to objects on our Grav instance
-        $grav = Grav::instance();
-        $locator = $grav['locator'];
-        $config = $grav['config'];
+        /** @var UniformResourceLocator $locator */
+        $locator = Grav::instance()['locator'];
 
-        # initialize an empty array
-        $themes = [];
+        # initialize an array with our default
+        $themes = array('None' => 'None');
 
-        # resolve the custom styles directory
-        $customStylesDirName = $config->get('plugins.highlight-php.custom_styles');
-        $customStylesPath = $locator->findResource('user://custom/' . $customStylesDirName, false);
-
-        if ($customStylesPath) {
-            # get our list of custom CSS files
-            $customCssFiles = glob($customStylesPath . '/*.css');
-            foreach ($customCssFiles as $cssFile) {
-                # append a superscript 1 (¹) to prevent naming conflicts if customizing an inbuilt theme
-                $theme = basename($cssFile, '.css') . '¹';
-                # indicate to the user that this theme is one of the custom uploads
-                $themes[$theme] = Inflector::titleize($theme) . ' (custom)';
-            }
-        }
-
-        # ➍ use the findResource method to resolve the plugin stream location; false returns a relative path
-        $bundledStylesPath = $locator->findResource('plugin://highlight-php/vendor/scrivo/highlight.php/styles', false);
+        # use the findResource method to resolve the plugin stream location; false returns a relative path
+        $stylesPath = $locator->findResource($directory, false);
 
         # plain old PHP glob. See https://www.php.net/manual/en/function.glob.php
-        $cssFiles = glob($bundledStylesPath . '/*.css');
+        $cssFiles = glob($stylesPath . '/*.css');
 
         foreach ($cssFiles as $cssFile) {
-            # ➋ store our key
-            $theme = basename($cssFile, ".css");
-            # ➌ set our value and add it to the array
-            $themes[$theme] = Inflector::titleize($theme); # ➍ thanks, titleize
+            $theme = basename($cssFile, '.css');
+            $themes[$theme] = Inflector::titleize($theme);
         }
 
-        # return the array
         return $themes;
+    }
+
+    /**
+     * List of themes available that ship with the plugin
+     * @return string[]
+     */
+    public static function getBuiltInThemes()
+    {
+        $builtInThemes = HighlightPhpPlugin::getThemesInDirectory(self::BUILT_IN_STYLES_DIRECTORY);
+        return $builtInThemes;
+    }
+
+    /**
+     * List of themes available in the user/data/highlight-php directory
+     * @return string[] associative array of css filenames, plus a 'None' entry
+     */
+    public static function getCustomThemes()
+    {
+        $customThemes = HighlightPhpPlugin::getThemesInDirectory(self::CUSTOM_STYLES_DIRECTORY);
+        return $customThemes;
     }
 }

@@ -1,3 +1,3 @@
 enabled: true
-theme: default
-custom_styles: highlight-php-styles
+style: 'default'
+customStyle: 'None'

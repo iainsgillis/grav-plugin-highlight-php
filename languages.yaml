@@ -1,6 +1,6 @@
 en:
   PLUGIN_HIGHLIGHT_PHP:
-    LABEL_CUSTOM_STYLES: Custom CSS styles directory
-    LABEL_CUSTOM_STYLES_HELP: Subdirectory in the /user/custom/ directory to store your custom syntax themes
-    LABEL_THEME: Theme
-    LABEL_THEME_HELP: 'Select an avaialble theme. Your custom themes appear at the top of the list.'
+    LABEL_STYLE: Theme
+    LABEL_STYLE_HELP: 'Select an available theme. Select "None" to exclude all CSS that ships with this plugin.'
+    LABEL_CUSTOM_STYLE: Custom Theme
+    LABEL_CUSTOM_STYLE_HELP: 'Select an available theme. Loads after built-in themes, so can contain overrides. Select "None" to exclude all CSS from the custom styles directory.'
