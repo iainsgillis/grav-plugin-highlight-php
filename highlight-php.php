@@ -102,9 +102,9 @@ class HighlightPhpPlugin extends Plugin
             $pagePreferencesSet && $config['enabled']       // ➋ per-page preferences set and the user set 'enabled' to true
         ) {
             // set the configured theme, falling back to 'default' if unset somehow
-            $style = $this->config->get('style') ?: 'default';
+            $style = $config['style'] ?: 'default';
             // set the configured theme, falling back to 'None' if unset somehow
-            $customStyle = $this->config->get('customStyle') ?: 'None';
+            $customStyle = $config['customStyle'] ?: 'None';
 
             // register the css for our plugin, if required
             if ($this->shouldLoadAsset($style)) {
