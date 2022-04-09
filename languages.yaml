@@ -4,3 +4,7 @@ en:
     LABEL_STYLE_HELP: 'Select an available theme. Select "None" to exclude all CSS that ships with this plugin.'
     LABEL_CUSTOM_STYLE: Custom Theme
     LABEL_CUSTOM_STYLE_HELP: 'Select an available theme. Loads after built-in themes, so can contain overrides. Select "None" to exclude all CSS from the custom styles directory.'
+    ASSET_LOADING: Preferred asset-loading strategy
+    ASSET_LOADING_HELP: 'If "site-wide", the plugin is globally active, but can be deactivated on a per-page based. If "per page", the reverse is true.'
+    SITE_WIDE: 'site-wide'
+    PER_PAGE: 'per page'

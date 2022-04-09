@@ -55,10 +55,41 @@ Before configuring this plugin, you should copy the
 Here is the default configuration and an explanation of available options:
 
 ```yaml
-enabled: true                           # turn the plugin on or off
-theme: default                          # basename of the active CSS filename
-custom_styles: highlight-php-styles     # directory name, under /user/custom where custom user styles may be added
+enabled: true             # turn the plugin on or off -- controls hl shortcode processing
+style: default            # basename of the active CSS filename that's included with the plugin
+customStyle: None         # basename of the active CSS filename in /user/data/highlight-php
+assetLoading: 'site-wide' # add selected syntax highlighting CSS on all pages
 ```
+
+By setting `style` or `customStyle` to 'None', that CSS will not be loaded 
+in the asset pipeline.
+
+Custom styles, if loaded, always load after the built-in styles, allowing for 
+tweaks/overrides to built-in themes (because of the cascade in CSS).
+
+When initialized for the first time, the plugin writes a one-rule demo CSS file
+(`exampleOverrideCursiveFont.css`) to the `/user/data/highlight-php` directory, 
+to make it easy for new users to see how an override works.
+
+```css
+.hljs { font-family: cursive; }
+```
+
+### The `assetLoading` property: per-page overrides
+
+By default, the selected CSS stylesheet(s) will be loaded on every page as part
+of the CSS pipeline, but can still be turned off on a per-page basis.
+
+By changing the `assetLoading` strategy to `per page`, the CSS stylesheets will
+**not** be loaded by default, although the `hl` shortcode will still be
+registered and processed. To get syntax highlighting using this `per page`
+strategy, you'll need to enable the asset loading on whichever pages you'd like
+your pretty code snippets to be rendered.
+
+To facilitate toggling this setting using the **Normal** mode of the default
+editor, this plugin ships with a blueprint that extends the `default` blueprint,
+which adds a section under the Options tab, below Taxonomies. 
+
 
 Note that if you use the Admin Plugin, a file with your configuration named
 highlight-php.yaml will be saved in the `user/config/plugins/`-folder once the
@@ -67,7 +98,7 @@ configuration is saved in the Admin.
 ## Usage
 
 Install & enable the plugin; select one of the builtin themes or add your own to
-the `/user/custom/<custom_styles>` directory. The plugin works globally;
+the `/user/data/highlight-php` directory. The plugin works globally;
 currently no page-level frontmatter overrides are supported.
 
 Only [explicit mode](https://github.com/scrivo/highlight.php#explicit-mode) is
@@ -115,6 +146,9 @@ This plugin wouldn't be possible with the great work of:
   [contributors](https://github.com/getgrav/grav/graphs/contributors), for
   [Grav](https://getgrav.org/) and the [Shortcode Core
   plugin](https://github.com/getgrav/grav-plugin-shortcode-core);
+- [@pamtbaau](https://github.com/pamtbaau) for their helpful review and
+  suggestions for improvement on my v0.9.0 release (to say nothing of their
+  other contributions to Grav forums and other plugins and such);
 - Thomas Kowalczyk ([@thunderer](https://github.com/thunderer),
   https://kowalczyk.cc/) for the underlying [shortcode
   engine](https://github.com/thunderer/Shortcode);
@@ -130,6 +164,5 @@ This plugin wouldn't be possible with the great work of:
 
 ## To Do
 
-- [ ] Add additional shortcode options/aliases?
 - [ ] Maybe add a CLI
 

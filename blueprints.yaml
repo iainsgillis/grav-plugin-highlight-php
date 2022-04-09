@@ -15,11 +15,10 @@ docs: https://github.com/iainsgillis/grav-plugin-highlight-php/blob/develop/READ
 license: MIT
 
 dependencies:
-  - { name: grav, version: '>=1.6.0' }
+  - { name: grav, version: '>=1.7.0' }
   - { name: shortcode-core, version: '>=4.2.2' }
 
 form:
-  validation: loose
   fields:
     enabled:
       type: toggle
@@ -31,6 +30,15 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
+    assetLoading:
+      type: toggle
+      label: PLUGIN_HIGHLIGHT_PHP.ASSET_LOADING
+      help: PLUGIN_HIGHLIGHT_PHP.ASSET_LOADING_HELP
+      highlight: siteWide
+      default: siteWide
+      options:
+        siteWide: 'site-wide'
+        perPage: 'per page'
     style:
       type: select
       size: medium
@@ -47,4 +55,4 @@ form:
       help: PLUGIN_HIGHLIGHT_PHP.LABEL_CUSTOM_STYLE_HELP
       default: 'None'
       data-options@: '\Grav\Plugin\HighlightPhpPlugin::getCustomThemes'
-      
+    

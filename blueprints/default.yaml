@@ -1,0 +1,50 @@
+title: &title Highlight PHP
+
+extends@:
+  type: "@parent"
+  context: blueprints://pages
+
+form:
+  validation: loose
+  fields:
+    tabs:
+      type: tabs
+      active: 1
+      fields:
+        options:
+          type: tab
+          fields:
+            highlight-php:
+              type: section
+              title: *title
+              underline: true
+              markdown: true
+              text: |
+                This setting controls *asset loading* for the Highlight PHP
+                plugin on a per-page basis. <br>
+
+                If you're seeing this configuration option, `hl` shortcodes will still be registered
+                because the Highlight PHP plugin is enabled globally. <br>
+
+                To disable it, or to change your preferred default
+                syntax-highlighting asset loading strategy for your entire site,
+                edit the plugin's configuration by editing
+                `/user/plugins/highlight-php.yaml`, either by editing the file
+                directly, or by going the plugin's settings page in the admin
+                interface.<br>
+
+                 Changes will only alter new pages, and on pages where this
+                 property has not yet be altered. Any changes made on a per-page
+                 basis are written to the page's header.
+              fields:
+                header.highlight-php.enabled:
+                  type: toggle
+                  text: text
+                  label: Highlight PHP asset loading on this page
+                  data-default@: '\Grav\Plugin\HighlightPhpPlugin::getUserActivationPreference'
+                  highlight: 1
+                  options:
+                    1: PLUGIN_ADMIN.ENABLED
+                    0: PLUGIN_ADMIN.DISABLED
+                  validate:
+                    type: bool

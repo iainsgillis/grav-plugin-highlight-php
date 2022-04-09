@@ -1,3 +1,4 @@
 enabled: true
+assetLoading: siteWide
 style: 'default'
 customStyle: 'None'
