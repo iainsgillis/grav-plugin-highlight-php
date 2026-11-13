@@ -5,6 +5,27 @@ CMS](http://github.com/getgrav/grav) that provides server-side syntax
 highlighting (i.e., without JavaScript) using the
 [highlight.php](https://github.com/scrivo/highlight.php) library.
 
+## Compatibility
+
+Supports Grav **1.7** and **2.0**, with Shortcode Core **4.2.2 or later**
+(use a Shortcode Core release compatible with your Grav version). The plugin
+retains its PHP 7.1.3 minimum; your Grav installation may require a newer PHP
+version. Bundled highlight.php dependencies are included for manual installs.
+
+### Testing
+
+Run the standalone shortcode smoke tests with all PHP warnings and deprecations
+treated as failures:
+
+```sh
+php tests/smoke.php
+```
+
+These tests do not replace integration testing. Before releasing, check both
+Grav 1.7 and 2.0 installations: plugin activation, inline and block `hl`
+shortcodes, site-wide and per-page CSS loading, custom styles, and the Admin
+plugin settings and page options. Check the PHP logs for warnings or errors.
+
 ## Installation
 
 Installing the Highlight PHP plugin can be done in one of three ways: The GPM

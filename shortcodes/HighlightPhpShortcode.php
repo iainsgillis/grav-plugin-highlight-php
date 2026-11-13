@@ -13,10 +13,10 @@ class HighlightPhpShortcode extends Shortcode
         $rawHandlers = $this->shortcode->getRawHandlers();
 
         $rawHandlers->add('hl', function (ShortcodeInterface $sc) {
-            $lang = $sc->getBbCode();
+            $lang = $sc->getBbCode() ?? '';
             $content = $sc->getContent();
             $isInline = is_null($content);
-            $code = $isInline ? $sc->getParameter('code') : $content;
+            $code = $isInline ? ($sc->getParameter('code') ?? '') : $content;
             $code = trim($code, "\n\r");
             return $this->render($lang, $code, $isInline);
         });

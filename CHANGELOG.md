@@ -1,3 +1,14 @@
+# v1.1.0
+##  13-11-2026
+
+1. [](#new)
+    * Declare compatibility with Grav 1.7 and 2.0
+    * Add standalone shortcode smoke tests
+
+2. [](#bugfix)
+    * Update bundled highlight.php to 9.18.1.10 to avoid PHP 8.2+ dynamic property deprecations
+    * Handle missing shortcode language and code parameters without PHP warnings or type errors
+
 # v1.0.0
 ##  09-04-2022
 

@@ -11,27 +11,27 @@ class ComposerStaticInit61b57ed6dfbb65cd70f7b41ac33678ff
     );
 
     public static $prefixLengthsPsr4 = array (
-        'G' => 
+        'G' =>
         array (
             'Grav\\Plugin\\HighlightPhp\\' => 25,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Grav\\Plugin\\HighlightPhp\\' => 
+        'Grav\\Plugin\\HighlightPhp\\' =>
         array (
             0 => __DIR__ . '/../..' . '/classes',
         ),
     );
 
     public static $prefixesPsr0 = array (
-        'H' => 
+        'H' =>
         array (
-            'Highlight\\' => 
+            'Highlight\\' =>
             array (
                 0 => __DIR__ . '/..' . '/scrivo/highlight.php',
             ),
-            'HighlightUtilities\\' => 
+            'HighlightUtilities\\' =>
             array (
                 0 => __DIR__ . '/..' . '/scrivo/highlight.php',
             ),
